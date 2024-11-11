@@ -10,16 +10,15 @@ const app = express();
 const port = process.env.PORT;
 
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use('/assets', express.static('assets'));
-app.use(session({ secret: process.env.SESSION_SECRET}));
+app.use(session({ secret: process.env.SESSION_SECRET }));
 
 // routes
 app.use('/', coreRoutes);
-app.use('/users', userRoutes); 
+app.use('/users', userRoutes);
 app.use('/steps', stepRoutes);
 
-
-app.listen(port, ()=>{
+app.listen(port, () => {
     console.log(`Server listening on port ${port}...`);
 });

@@ -1,17 +1,17 @@
 var mysql = require('mysql');
 
-var pool  = mysql.createPool({
-    connectionLimit : process.env.CONNECTIONLIMIT,
-    host            : process.env.DBHOST,
-    user            : process.env.DBUSER,
-    password        : process.env.DBPASS,
-    database        : process.env.DBNAME
+var pool = mysql.createPool({
+    connectionLimit: process.env.CONNECTIONLIMIT,
+    host: process.env.DBHOST,
+    user: process.env.DBUSER,
+    password: process.env.DBPASS,
+    database: process.env.DBNAME,
 });
 
 pool.getConnection((err) => {
-    if (err){
+    if (err) {
         console.log('Error connection to MySQL: ' + err);
-    }else{
+    } else {
         console.log('connected to MySQL database.');
     }
 });
