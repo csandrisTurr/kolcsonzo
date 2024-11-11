@@ -20,7 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Adatbázis: `kolcsonzodb`
 --
-
+CREATE DATABASE IF NOT EXISTS `kolcsonzodb` DEFAULT CHARACTER SET utf8 COLLATE utf8_hungarian_ci;
+USE `kolcsonzodb`;
 -- --------------------------------------------------------
 
 --
