@@ -1,0 +1,26 @@
+<canvas id="chart"></canvas>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('chart');
+  
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: <%- JSON.stringify(labels) %>,
+        datasets: [{
+          label: '# of Steps',
+          data: <%- JSON.stringify(datas) %>,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+});
+  </script>
