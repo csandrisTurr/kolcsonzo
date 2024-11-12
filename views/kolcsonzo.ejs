@@ -2,3 +2,47 @@
 <%- include('header') %>
 
 <h4 class="mb-3">Könyvek listája és kölcsönzése</h4>
+
+<div class="container mt-5">
+    <div id="book-cards" class="row">
+      <!-- Cards will be dynamically generated here -->
+    </div>
+  </div>
+
+  <script>
+    // Fetch the available books from the backend
+    fetch('/api/items')
+      .then(response => response.json())
+      .then(data => {
+        const container = document.getElementById('book-cards');
+        
+        // Clear any existing content
+        container.innerHTML = '';
+        
+        // Generate a card for each available book
+        data.forEach(item => {
+          const card = document.createElement('div');
+          card.classList.add('col-md-4', 'mb-4');
+          
+          card.innerHTML = `
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">${item.title}</h5>
+                <p class="card-text">${item.type}</p>
+                <a href="#" class="btn btn-primary">Kölcsönzés</a>
+              </div>
+            </div>
+          `;
+          
+          // Append the card to the container
+          container.appendChild(card);
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching items:', error);
+      });
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  <%- include('footer') %>
