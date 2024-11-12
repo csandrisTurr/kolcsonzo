@@ -9,7 +9,7 @@
         <% results.forEach(item => { %>
         <div class="col-md-4 mb-4">
             <div class="card">
-                <form class="card-body" action="/api/rent" method="post">
+                <form class="card-body" action="/api/rental/rent" method="post">
                     <h5 class="card-title"><%= item.title %></h5>
                     <p class="card-text"><%= item.type %></p>
 
