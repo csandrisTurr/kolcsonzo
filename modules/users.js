@@ -95,7 +95,8 @@ router.post('/login', (req, res) => {
             req.session.userRole = results[0].role;
 
             //  console.log(req.session);
-            res.redirect('/newdata');
+            // newdata volt csak atirtam kolcsonzore
+            res.redirect('/kolcsonzo');
             return;
         }
     );

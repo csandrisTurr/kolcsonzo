@@ -28,10 +28,11 @@ router.get('/reg', (req, res) => {
     });
 });
 
-router.get('/newdata', (req, res) => {
+//newdata volt csak atirtam kolcsonzore
+router.get('/kolcsonzo', (req, res) => {
     if (req.session.isLoggedIn) {
         let today = moment(new Date()).format('YYYY-MM-DD');
-        ejs.renderFile('./views/newdata.ejs', { session: req.session, today }, (err, html) => {
+        ejs.renderFile('./views/kolcsonzo.ejs', { session: req.session, today }, (err, html) => {
             if (err) {
                 console.log(err);
                 return;
