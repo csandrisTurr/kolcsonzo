@@ -1,13 +1,12 @@
 const express = require('express');
 const db = require('./database');
 var CryptoJS = require('crypto-js');
-const uuid = require('uuid');
 const router = express.Router();
 const passwdRegExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
 // USER routes
 
-router.post('/reg', (req, res) => {
+router.post('/register', (req, res) => {
     let { name, email, passwd, confirm } = req.body;
 
     if (!name || !email || !passwd || !confirm) {

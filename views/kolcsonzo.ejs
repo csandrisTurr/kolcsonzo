@@ -6,42 +6,23 @@
 <!--itt generálja le dinamikusan a kártyákat-->
 <div class="container mt-5">
     <div id="book-cards" class="row">
-    </div>
-  </div>
-
-  <script>
-    fetch('/api/items')
-      .then(response => response.json())
-      .then(data => {
-        const container = document.getElementById('book-cards');
-        
-        // Kitörli a már létező tartalmat
-        container.innerHTML = '';
-        
-        // Elérhető könyvekre vagy filmekre csinál kártyát, ami nem elérhető kihagyja
-        data.forEach(item => {
-          const card = document.createElement('div');
-          card.classList.add('col-md-4', 'mb-4');
-          
-          card.innerHTML = `
+        <% results.forEach(item => { %>
+        <div class="col-md-4 mb-4">
             <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">${item.title}</h5>
-                <p class="card-text">${item.type}</p>
-                <a href="#" class="btn btn-primary">Kölcsönzés</a>
-              </div>
+                <div class="card-body">
+                    <h5 class="card-title"><%= item.title %></h5>
+                    <p class="card-text"><%= item.type %></p>
+                    <a href="#" class="btn btn-primary">Kölcsönzés</a>
+                </div>
             </div>
-          `;
-          
-          // Hozzáadja a cardot a containerhez
-          container.appendChild(card);
-        });
-      })
-      .catch(error => {
-        console.error('Error fetching items:', error);
-      });
-  </script>
+        </div>
+        <% }); %>
+    </div>
+</div>
 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-  <%- include('footer') %>
+<script>
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<%- include('footer') %>

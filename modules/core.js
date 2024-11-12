@@ -1,6 +1,6 @@
 const express = require('express');
 const ejs = require('ejs');
-const { route } = require('./users');
+const { route } = require('./user');
 const router = express.Router();
 const db = require('./database');
 const moment = require('moment');
@@ -17,8 +17,8 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/reg', (req, res) => {
-    ejs.renderFile('./views/regist.ejs', { session: req.session }, (err, html) => {
+router.get('/register', (req, res) => {
+    ejs.renderFile('./views/register.ejs', { session: req.session }, (err, html) => {
         if (err) {
             console.log(err);
             return;
@@ -32,16 +32,26 @@ router.get('/reg', (req, res) => {
 router.get('/kolcsonzo', (req, res) => {
     if (req.session.isLoggedIn) {
         let today = moment(new Date()).format('YYYY-MM-DD');
-        ejs.renderFile('./views/kolcsonzo.ejs', { session: req.session, today }, (err, html) => {
+
+        db.query(`SELECT item_id, title, type FROM items WHERE available = true;`, (err, results) => {
             if (err) {
-                console.log(err);
+                console.error('Error fetching items:', err);
+                res.status(500).send('Database error');
                 return;
             }
-            req.session.msg = '';
-            res.send(html);
+
+            ejs.renderFile('./views/kolcsonzo.ejs', { session: req.session, today, results }, (err, html) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                req.session.msg = '';
+                res.send(html);
+            });
         });
         return;
     }
+
     res.redirect('/');
 });
 
@@ -60,25 +70,6 @@ router.get('/kolcsonzottek', (req, res) => {
     }
     res.redirect('/');
 });
-
-//Könyv kölcsönzés lekérés
-router.get('/api/items', (req, res) => {
-    const query = `
-      SELECT item_id, title, type
-      FROM items
-      WHERE available = true;
-    `;
-    
-    db.query(query, (err, results) => {
-      if (err) {
-        console.error('Error fetching items:', err);
-        res.status(500).send('Database error');
-        return;
-      }
-      
-      res.json(results);
-    });
-  });
 
 router.get('/statistics', (req, res) => {
     if (req.session.isLoggedIn) {
