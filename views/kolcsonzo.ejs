@@ -3,23 +3,22 @@
 
 <h4 class="mb-3">Könyvek listája és kölcsönzése</h4>
 
+<!--itt generálja le dinamikusan a kártyákat-->
 <div class="container mt-5">
     <div id="book-cards" class="row">
-      <!-- Cards will be dynamically generated here -->
     </div>
   </div>
 
   <script>
-    // Fetch the available books from the backend
     fetch('/api/items')
       .then(response => response.json())
       .then(data => {
         const container = document.getElementById('book-cards');
         
-        // Clear any existing content
+        // Kitörli a már létező tartalmat
         container.innerHTML = '';
         
-        // Generate a card for each available book
+        // Elérhető könyvekre vagy filmekre csinál kártyát, ami nem elérhető kihagyja
         data.forEach(item => {
           const card = document.createElement('div');
           card.classList.add('col-md-4', 'mb-4');
@@ -34,7 +33,7 @@
             </div>
           `;
           
-          // Append the card to the container
+          // Hozzáadja a cardot a containerhez
           container.appendChild(card);
         });
       })

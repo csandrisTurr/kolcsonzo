@@ -45,6 +45,22 @@ router.get('/kolcsonzo', (req, res) => {
     res.redirect('/');
 });
 
+router.get('/kolcsonzottek', (req, res) => {
+    if (req.session.isLoggedIn) {
+        let today = moment(new Date()).format('YYYY-MM-DD');
+        ejs.renderFile('./views/kolcsonzottek.ejs', { session: req.session, today }, (err, html) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            req.session.msg = '';
+            res.send(html);
+        });
+        return;
+    }
+    res.redirect('/');
+});
+
 //Könyv kölcsönzés lekérés
 router.get('/api/items', (req, res) => {
     const query = `
