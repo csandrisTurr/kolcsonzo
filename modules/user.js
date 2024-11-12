@@ -39,7 +39,7 @@ router.post('/register', (req, res) => {
         }
 
         db.query(
-            `INSERT INTO users (name, email, password, membership_date, role) VALUES(?, ?, SHA1(?), CURDATE(), 'user')`,
+            `INSERT INTO users (name, email, password, membership_date, role) VALUES(?, ?, SHA1(?), CURDATE(), '0')`,
             [name, email, passwd],
             (err, results) => {
                 if (err) {
