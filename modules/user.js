@@ -12,21 +12,21 @@ router.post('/register', (req, res) => {
     if (!name || !email || !passwd || !confirm) {
         req.session.msg = 'Missing data!';
         req.session.severity = 'danger';
-        res.redirect('/reg');
+        res.redirect('/register');
         return;
     }
 
     if (passwd != confirm) {
         req.session.msg = 'Passwords dont match!';
         req.session.severity = 'danger';
-        res.redirect('/reg');
+        res.redirect('/register');
         return;
     }
 
     if (!passwd.match(passwdRegExp)) {
         req.session.msg = 'Password is weak!';
         req.session.severity = 'danger';
-        res.redirect('/reg');
+        res.redirect('/register');
         return;
     }
 
@@ -34,7 +34,7 @@ router.post('/register', (req, res) => {
         if (err) {
             req.session.msg = 'This e-mail already registered!';
             req.session.severity = 'danger';
-            res.redirect('/reg');
+            res.redirect('/register');
             return;
         }
 
@@ -46,7 +46,7 @@ router.post('/register', (req, res) => {
                     console.log(err);
                     req.session.msg = 'Database error!';
                     req.session.severity = 'danger';
-                    res.redirect('/reg');
+                    res.redirect('/register');
                     return;
                 }
                 req.session.msg = 'User registered!';
