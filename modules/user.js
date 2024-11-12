@@ -88,10 +88,10 @@ router.post('/login', (req, res) => {
             req.session.severity = 'info';
 
             req.session.isLoggedIn = true;
-            req.session.userID = results[0].ID;
+            req.session.userID = results[0].user_id;
             req.session.userName = results[0].name;
             req.session.userEmail = results[0].email;
-            req.session.userRole = results[0].role;
+            req.session.isAdmin = results[0].role;
 
             //  console.log(req.session);
             // newdata volt csak atirtam kolcsonzore
