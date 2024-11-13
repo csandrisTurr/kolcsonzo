@@ -1,0 +1,65 @@
+<!--Oldal ahol listázza az elérhető könyveket és minden könyv mellett van kölcsönzés gomb-->
+<%- include('header') %>
+
+<h4 class="mb-3">Adminisztracios felulet felhasznaloi listaja</h4>
+
+<%- include('message') %>
+
+<div class="container mt-5">
+    <div id="book-cards" class="row mb-5">
+        <form method="POST" action="/api/item">
+            <div class="mb-3">
+                <label for="title" class="form-label">Cim</label>
+                <input type="text" class="form-control" id="title" name="title" aria-describedby="emailHelp">
+            </div>
+            <label for="type" class="form-label">Tipus</label>
+            <select class="form-select" aria-label="Tipus" id="type" name="type">
+                <option value="könyv">Konyv</option>
+                <option value="film">Film</option>
+            </select>
+            <button type="submit" class="btn btn-primary mt-3">Nyomjad!</button>
+        </form>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Cim</th>
+                <th scope="col">Tipus</th>
+                <th scope="col">Kolcsonozheto epp</th>
+                <th scope="col">Muveletek</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% results.forEach(item => { %>
+            <tr>
+                <form method="POST" id="form-delete-<%= item.item_id %>" action="/api/item/delete"></form>
+                <form method="POST" id="form-modify-<%= item.item_id %>" action="/api/item/modify"></form>
+                <input type="hidden" name="id" form="form-delete-<%= item.item_id %>" value="<%= item.item_id %>">
+                <input type="hidden" name="id" form="form-modify-<%= item.item_id %>" value="<%= item.item_id %>">
+
+                <th scope="row"><%= item.item_id %></th>
+                <th scope="row">
+                    <input type="text" name="title" id="title" form="form-modify-<%= item.item_id %>" value="<%= item.title %>">
+                </th>
+                <th scope="row">
+                    <select name="type" id="type" form="form-modify-<%= item.item_id %>">
+                        <option value="könyv" <% if (item.type == 'könyv') { %> selected <% } %>>Konyv</option>
+                        <option value="film" <% if (item.type == 'film') { %> selected <% } %>>Film</option>
+                    </select>
+                <th scope="row"><%= item.available %></th>
+                <th scope="row">
+                    <input type="submit" form="form-modify-<%= item.item_id %>" value="Modositas">
+                    <input type="submit" form="form-delete-<%= item.item_id %>" value="Torles">
+                </th>
+            </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>
+
+<script></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<%- include('footer') %>

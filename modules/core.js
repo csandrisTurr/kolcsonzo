@@ -59,22 +59,30 @@ router.get('/kolcsonzottek', (req, res) => {
     if (req.session.isLoggedIn) {
         let today = moment(new Date()).format('YYYY-MM-DD');
 
-        db.query(`SELECT * FROM items INNER JOIN rentals ON items.item_id = rentals.item_id WHERE rentals.user_id = ? ORDER BY rentals.rental_date ASC;`, [req.session.userID], (err, results) => {
-            if (err) {
-                console.error('Error fetching items:', err);
-                res.status(500).send('Database error');
-                return;
-            }
-
-            ejs.renderFile('./views/kolcsonzottek.ejs', { session: req.session, today, results, moment }, (err, html) => {
+        db.query(
+            `SELECT * FROM items INNER JOIN rentals ON items.item_id = rentals.item_id WHERE rentals.user_id = ? ORDER BY rentals.rental_date ASC;`,
+            [req.session.userID],
+            (err, results) => {
                 if (err) {
-                    console.log(err);
+                    console.error('Error fetching items:', err);
+                    res.status(500).send('Database error');
                     return;
                 }
-                req.session.msg = '';
-                res.send(html);
-            });
-        });
+
+                ejs.renderFile(
+                    './views/kolcsonzottek.ejs',
+                    { session: req.session, today, results, moment },
+                    (err, html) => {
+                        if (err) {
+                            console.log(err);
+                            return;
+                        }
+                        req.session.msg = '';
+                        res.send(html);
+                    }
+                );
+            }
+        );
 
         return;
     }
@@ -127,7 +135,7 @@ router.get('/statistics', (req, res) => {
 });
 
 router.get('/admin/users', (req, res) => {
-    if (req.session.isLoggedIn) {
+    if (req.session.isLoggedIn && req.session.isAdmin) {
         let today = moment(new Date()).format('YYYY-MM-DD');
 
         db.query(`SELECT * FROM users;`, [], (err, results) => {
@@ -153,35 +161,76 @@ router.get('/admin/users', (req, res) => {
 });
 
 router.get('/admin/rentals', (req, res) => {
-    if (req.session.isLoggedIn) {
+    if (req.session.isLoggedIn && req.session.isAdmin) {
         let today = moment(new Date()).format('YYYY-MM-DD');
 
-        db.query(`SELECT * FROM rentals INNER JOIN items ON items.item_id = rentals.item_id INNER JOIN users ON rentals.user_id = users.user_id ORDER BY rentals.rental_date ASC;`, [], (err, tableResults) => {
-            if (err) {
-                console.error('Error fetching items:', err);
-                res.status(500).send('Database error');
-                return;
-            }
-
-            db.query(`SELECT sum(items.type = 'könyv') as konyv, sum(items.type = 'film') as film FROM rentals INNER JOIN items ON rentals.item_id = items.item_id;`, [], (err, statResults) => {
+        db.query(
+            `SELECT * FROM rentals INNER JOIN items ON items.item_id = rentals.item_id INNER JOIN users ON rentals.user_id = users.user_id ORDER BY rentals.rental_id ASC;`,
+            [],
+            (err, tableResults) => {
                 if (err) {
                     console.error('Error fetching items:', err);
                     res.status(500).send('Database error');
                     return;
                 }
 
-                statResults = statResults[0];
+                db.query(
+                    `SELECT sum(items.type = 'könyv') as konyv, sum(items.type = 'film') as film FROM rentals INNER JOIN items ON rentals.item_id = items.item_id;`,
+                    [],
+                    (err, statResults) => {
+                        if (err) {
+                            console.error('Error fetching items:', err);
+                            res.status(500).send('Database error');
+                            return;
+                        }
 
-                ejs.renderFile('./views/rentals.ejs', { session: req.session, today, tableResults, statResults, moment }, (err, html) => {
+                        statResults = statResults[0];
+
+                        ejs.renderFile(
+                            './views/rentals.ejs',
+                            { session: req.session, today, tableResults, statResults, moment },
+                            (err, html) => {
+                                if (err) {
+                                    console.log(err);
+                                    return;
+                                }
+                                req.session.msg = '';
+                                res.send(html);
+                            }
+                        );
+                    }
+                );
+            }
+        );
+
+        return;
+    }
+    res.redirect('/');
+});
+
+router.get('/admin/items', (req, res) => {
+    if (req.session.isLoggedIn && req.session.isAdmin) {
+        let today = moment(new Date()).format('YYYY-MM-DD');
+
+        db.query(`SELECT * FROM items;`, [], (err, results) => {
+            if (err) {
+                console.error('Error fetching items:', err);
+                res.status(500).send('Database error');
+                return;
+            }
+
+            ejs.renderFile(
+                './views/items.ejs',
+                { session: req.session, today, results, moment },
+                (err, html) => {
                     if (err) {
                         console.log(err);
                         return;
                     }
                     req.session.msg = '';
                     res.send(html);
-                });
-            });
-
+                }
+            );
         });
 
         return;
