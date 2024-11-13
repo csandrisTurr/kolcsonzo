@@ -36,7 +36,7 @@ router.get('/kolcsonzo', (req, res) => {
         db.query(`SELECT item_id, title, type FROM items WHERE available = true;`, (err, results) => {
             if (err) {
                 console.error('Error fetching items:', err);
-                res.status(500).send('Database error');
+                req.session.msg = '';
                 return;
             }
 
@@ -58,14 +58,24 @@ router.get('/kolcsonzo', (req, res) => {
 router.get('/kolcsonzottek', (req, res) => {
     if (req.session.isLoggedIn) {
         let today = moment(new Date()).format('YYYY-MM-DD');
-        ejs.renderFile('./views/kolcsonzottek.ejs', { session: req.session, today }, (err, html) => {
+
+        db.query(`SELECT * FROM items INNER JOIN rentals ON items.item_id = rentals.item_id WHERE rentals.user_id = ? ORDER BY rentals.rental_date ASC;`, [req.session.userID], (err, results) => {
             if (err) {
-                console.log(err);
+                console.error('Error fetching items:', err);
+                res.status(500).send('Database error');
                 return;
             }
-            req.session.msg = '';
-            res.send(html);
+
+            ejs.renderFile('./views/kolcsonzottek.ejs', { session: req.session, today, results, moment }, (err, html) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                req.session.msg = '';
+                res.send(html);
+            });
         });
+
         return;
     }
     res.redirect('/');
@@ -121,7 +131,7 @@ router.get('/logout', (req, res) => {
     req.session.userID = null;
     req.session.userName = null;
     req.session.userEmail = null;
-    req.session.userRole = null;
+    req.session.isAdmin = false;
     req.session.msg = 'You are logged out!';
     req.session.severity = 'info';
     res.redirect('/');

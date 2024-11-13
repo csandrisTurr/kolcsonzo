@@ -47,7 +47,7 @@ CREATE TABLE `rentals` (
   `user_id` int(50) NOT NULL,
   `item_id` int(50) NOT NULL,
   `rental_date` date NOT NULL,
-  `return_date` date NOT NULL
+  `return_date` date
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 -- --------------------------------------------------------

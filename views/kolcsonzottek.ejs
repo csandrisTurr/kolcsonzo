@@ -2,4 +2,28 @@
 
 <h4 class="mb-3">Aktuális és korábbi kölcsönzések</h4>
 
+<div class="container mt-5">
+    <div id="book-cards" class="row">
+        <% results.forEach(item => { %>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <form class="card-body" action="/api/rental/bring_back" method="post">
+                    <h5 class="card-title"><%= item.title %></h5>
+                    <p class="card-text"><%= item.type %></p>
+                    <p class="card-text">Kolcsonozve: <%= moment(item.rental_date).format('YYYY-MM-DD') %></p>
+
+                    <input type="hidden" id="id" name="id" value="<%= item.item_id %>" />
+                    <input type="hidden" id="rental_id" name="rental_id" value="<%= item.rental_id %>" />
+                    <% if (!item.return_date) { %>
+                        <input class="btn btn-primary" type="submit" value="UnKölcsönzés" name="kolcsonzesBtn">
+                    <% } else { %>
+                        <p class="card-text">Visszahozva: <%= moment(item.return_date).format('YYYY-MM-DD') %></p>
+                    <% } %>
+                </form>
+            </div>
+        </div>
+        <% }); %>
+    </div>
+</div>
+
 <%- include('footer') %>

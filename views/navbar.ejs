@@ -1,40 +1,59 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navbar</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- ha nem vagyunk bejelentkezve -->
+            <% if (!session.isLoggedIn) { %>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/register">Registration</a>
+                </li>
+            </ul>
+            <% } %>
 
-        <!-- ha nem vagyunk bejelentkezve -->
-        <% if (!session.isLoggedIn) { %>
+            <!-- ha user-ként vagyunk bejelentkezve -->
+            <% if (session.isLoggedIn) { %>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/kolcsonzo">Lista</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/kolcsonzottek">Kölcsönzések</a>
+                </li>
+            </ul>
+            <% } %>
+        </div>
+        <% if (session.isAdmin) { %>
         <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="/">Login</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="/register">Registration</a>
-          </li>
+            <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="/admin/users">A fel hasznaloi</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="/admin/kolcsonzesek">A kolcson ozesek lista azasa</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="/admin/targyak">A targyak kez elese</a>
+            </li>
         </ul>
         <% } %>
-        
-        <!-- ha user-ként vagyunk bejelentkezve -->
-        <% if (session.isLoggedIn) { %>
-          <ul class="navbar-nav">
+        <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="/kolcsonzo">Lista</a>
+                <a class="nav-link" aria-current="page" href="/logout">Logout</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="/kolcsonzottek">Kölcsönzések</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="/logout">Logout</a>
-            </li>
-          </ul>
-          <% } %>
-
-        <!-- //TODO: ha admin-ként vagyunk bejelentkezve -->
-
+        </ul>
     </div>
-    </div>
-  </nav>
+</nav>
