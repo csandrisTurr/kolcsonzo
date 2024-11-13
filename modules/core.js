@@ -126,6 +126,32 @@ router.get('/statistics', (req, res) => {
     res.redirect('/');
 });
 
+router.get('/admin/users', (req, res) => {
+    if (req.session.isLoggedIn) {
+        let today = moment(new Date()).format('YYYY-MM-DD');
+
+        db.query(`SELECT * FROM users;`, [], (err, results) => {
+            if (err) {
+                console.error('Error fetching items:', err);
+                res.status(500).send('Database error');
+                return;
+            }
+
+            ejs.renderFile('./views/users.ejs', { session: req.session, today, results, moment }, (err, html) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                req.session.msg = '';
+                res.send(html);
+            });
+        });
+
+        return;
+    }
+    res.redirect('/');
+});
+
 router.get('/logout', (req, res) => {
     req.session.isLoggedIn = false;
     req.session.userID = null;

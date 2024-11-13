@@ -1,0 +1,38 @@
+<!--Oldal ahol listázza az elérhető könyveket és minden könyv mellett van kölcsönzés gomb-->
+<%- include('header') %>
+
+<h4 class="mb-3">Adminisztracios felulet felhasznaloi listaja</h4>
+
+<%- include('message') %>
+
+<!--itt generálja le dinamikusan a kártyákat-->
+<div class="container mt-5">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Imel</th>
+                <th scope="col">Regisztracio idelye</th>
+                <th scope="col">Admin-e</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% results.forEach(item => { %>
+                <tr>
+                    <th scope="row"><%= item.user_id %></th>
+                    <th scope="row"><%= item.name %></th>
+                    <th scope="row"><%= item.email %></th>
+                    <th scope="row"><%= moment(item.membership_date).format('YYYY-MM-DD') %></th>
+                    <th scope="row"><%= item.role %></th>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>
+
+<script></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<%- include('footer') %>
