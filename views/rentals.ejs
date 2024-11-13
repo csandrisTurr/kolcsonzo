@@ -1,0 +1,45 @@
+<!--Oldal ahol listázza az elérhető könyveket és minden könyv mellett van kölcsönzés gomb-->
+<%- include('header') %>
+
+<h4 class="mb-3">Adminisztracios felulet felhasznaloi listaja</h4>
+
+<%- include('message') %>
+
+<div class="container mt-5">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Felhasznalo neve</th>
+                <th scope="col">Cim</th>
+                <th scope="col">Tipus</th>
+                <th scope="col">Kolcsonzes idelye</th>
+                <th scope="col">Visszahozva</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% results.forEach(item => { %>
+                <tr>
+                    <th scope="row"><%= item.rental_id %></th>
+                    <th scope="row"><%= item.name %></th>
+                    <th scope="row"><%= item.title %></th>
+                    <th scope="row"><%= item.type %></th>
+                    <th scope="row"><%= moment(item.rental_date).format('YYYY-MM-DD') %></th>
+                    <th class="card-text">
+                        <% if (!item.return_date) { %>
+                            Meg nem
+                        <% } else { %>
+                            <%= moment(item.return_date).format('YYYY-MM-DD') %>
+                        <% } %>
+                    </th>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>
+
+<script></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<%- include('footer') %>

@@ -152,6 +152,32 @@ router.get('/admin/users', (req, res) => {
     res.redirect('/');
 });
 
+router.get('/admin/rentals', (req, res) => {
+    if (req.session.isLoggedIn) {
+        let today = moment(new Date()).format('YYYY-MM-DD');
+
+        db.query(`SELECT * FROM rentals INNER JOIN items ON items.item_id = rentals.item_id INNER JOIN users ON rentals.user_id = users.user_id ORDER BY rentals.rental_date ASC;`, [], (err, results) => {
+            if (err) {
+                console.error('Error fetching items:', err);
+                res.status(500).send('Database error');
+                return;
+            }
+
+            ejs.renderFile('./views/rentals.ejs', { session: req.session, today, results, moment }, (err, html) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                req.session.msg = '';
+                res.send(html);
+            });
+        });
+
+        return;
+    }
+    res.redirect('/');
+});
+
 router.get('/logout', (req, res) => {
     req.session.isLoggedIn = false;
     req.session.userID = null;
