@@ -6,6 +6,24 @@
 <%- include('message') %>
 
 <div class="container mt-5">
+    <div id="book-cards" class="row mb-5">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">Kolcsonzott konyvek szama</div>
+                <div class="card-body">
+                    <h1 class="card-title"><%= statResults.konyv %></h1>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-header">Kolcsonzott filmek szama</div>
+                <div class="card-body">
+                    <h1 class="card-title"><%= statResults.film %></h1>
+                </div>
+            </div>
+        </div>
+    </div>
     <table class="table">
         <thead>
             <tr>
@@ -18,21 +36,18 @@
             </tr>
         </thead>
         <tbody>
-            <% results.forEach(item => { %>
-                <tr>
-                    <th scope="row"><%= item.rental_id %></th>
-                    <th scope="row"><%= item.name %></th>
-                    <th scope="row"><%= item.title %></th>
-                    <th scope="row"><%= item.type %></th>
-                    <th scope="row"><%= moment(item.rental_date).format('YYYY-MM-DD') %></th>
-                    <th class="card-text">
-                        <% if (!item.return_date) { %>
-                            Meg nem
-                        <% } else { %>
-                            <%= moment(item.return_date).format('YYYY-MM-DD') %>
-                        <% } %>
-                    </th>
-                </tr>
+            <% tableResults.forEach(item => { %>
+            <tr>
+                <th scope="row"><%= item.rental_id %></th>
+                <th scope="row"><%= item.name %></th>
+                <th scope="row"><%= item.title %></th>
+                <th scope="row"><%= item.type %></th>
+                <th scope="row"><%= moment(item.rental_date).format('YYYY-MM-DD') %></th>
+                <th class="card-text">
+                    <% if (!item.return_date) { %> Meg nem <% } else { %> <%=
+                    moment(item.return_date).format('YYYY-MM-DD') %> <% } %>
+                </th>
+            </tr>
             <% }) %>
         </tbody>
     </table>
